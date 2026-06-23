@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../lib/design/tokens.css';
+
+@layer base {
+  html,
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Eyebrow / kicker text — uppercase mono labels */
+  .eyebrow {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  /* Display type — for huge condensed titles */
+  .display {
+    font-family: var(--font-anton), Impact, sans-serif;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+  }
+
+  /* Editorial serif — for special moments */
+  .editorial {
+    font-family: var(--font-instrument-serif), serif;
+    font-style: italic;
+  }
+
+  /* Subtle studio grid background — applied to sections */
+  .studio-grid {
+    background-image: linear-gradient(
+      to right,
+      var(--grid-line) 1px,
+      transparent 1px
+    );
+    background-size: calc(100% / 12) 100%;
+  }
+}
