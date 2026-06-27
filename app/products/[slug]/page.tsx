@@ -26,34 +26,80 @@ export default async function ProductDetailPage({
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <main className="min-h-screen bg-[#EDE8DF]">
+    <main style={{ minHeight: '100vh', backgroundColor: '#F5EFE6' }}>
       <Header />
 
       {/* Breadcrumb */}
-      <div className="px-6 py-4 lg:px-12">
-        <div className="mx-auto max-w-[1600px]">
-          <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest-plus text-[#8C7B6B]">
-            <Link href="/" className="transition-colors hover:text-[#1A1A1A]">HOME</Link>
-            <span>·</span>
-            <Link href="/products" className="transition-colors hover:text-[#1A1A1A]">PRODUCTS</Link>
-            <span>·</span>
-            <span className="text-[#1A1A1A]">{product.name}</span>
+      <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid rgba(30,35,24,0.07)' }}>
+        <style>{`
+          .pdp-bc-link {
+            font-family: var(--font-jetbrains-mono), monospace;
+            font-size: 9px;
+            letter-spacing: 0.22em;
+            color: #9A8A74;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.2s;
+          }
+          .pdp-bc-link:hover { color: #1C1410; }
+          .pdp-bc-current {
+            font-family: var(--font-jetbrains-mono), monospace;
+            font-size: 9px;
+            letter-spacing: 0.22em;
+            color: #1C1410;
+            text-transform: uppercase;
+          }
+          .pdp-bc-sep {
+            font-family: var(--font-jetbrains-mono), monospace;
+            font-size: 9px;
+            color: rgba(154,138,116,0.4);
+          }
+          @media (min-width: 1024px) {
+            .pdp-grid {
+              grid-template-columns: 1fr 420px !important;
+              gap: 4rem !important;
+            }
+          }
+          @media (min-width: 1280px) {
+            .pdp-grid {
+              grid-template-columns: 1fr 480px !important;
+            }
+          }
+        `}</style>
+        <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Link href="/" className="pdp-bc-link">Home</Link>
+            <span className="pdp-bc-sep">·</span>
+            <Link href="/products" className="pdp-bc-link">Products</Link>
+            <span className="pdp-bc-sep">·</span>
+            <span className="pdp-bc-current">{product.name}</span>
           </div>
         </div>
       </div>
 
-      <div className="px-6 pb-24 pt-6 lg:px-12">
-        <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 lg:grid-cols-[1fr_420px] lg:gap-16 xl:grid-cols-[1fr_480px]">
-
-          {/* ── LEFT — 2-column image grid ── */}
-          <div className="grid grid-cols-2 gap-3">
+      {/* Body */}
+      <div style={{ padding: '3rem 1.5rem 6rem', maxWidth: '1600px', margin: '0 auto' }}>
+        <div
+          className="pdp-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '3rem',
+          }}
+        >
+          {/* ── LEFT — image grid ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             {product.images.length > 0 ? (
               product.images.map((img, i) => (
                 <div
                   key={i}
-                  className={`relative overflow-hidden bg-[#E0DAD0] ${
-                    i === 0 ? 'col-span-2 aspect-[4/3]' : 'col-span-1 aspect-[3/4]'
-                  }`}
+                  style={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    backgroundColor: '#E8E0D0',
+                    gridColumn: i === 0 ? 'span 2' : 'span 1',
+                    aspectRatio: i === 0 ? '4/3' : '3/4',
+                  }}
                 >
                   <Image
                     src={img}
@@ -67,18 +113,17 @@ export default async function ProductDetailPage({
               ))
             ) : (
               <>
-                <div className="col-span-2 aspect-[4/3] bg-gradient-to-br from-[#D9D0C1] to-[#C8BFB0]" />
-                <div className="col-span-1 aspect-[3/4] bg-gradient-to-br from-[#C8BFB0] to-[#BFB8A8]" />
-                <div className="col-span-1 aspect-[3/4] bg-gradient-to-br from-[#D4CFC8] to-[#C8BFB0]" />
-                <div className="col-span-1 aspect-[3/4] bg-gradient-to-br from-[#BFB8A8] to-[#C8BFB0]" />
-                <div className="col-span-1 aspect-[3/4] bg-gradient-to-br from-[#C8BFB0] to-[#D4CFC8]" />
+                <div style={{ gridColumn: 'span 2', aspectRatio: '4/3', background: 'linear-gradient(135deg, #E8E0D0 0%, #D4CFC8 100%)' }} />
+                <div style={{ aspectRatio: '3/4', background: 'linear-gradient(135deg, #D4CFC8 0%, #C8BFB0 100%)' }} />
+                <div style={{ aspectRatio: '3/4', background: 'linear-gradient(135deg, #C8BFB0 0%, #D4CFC8 100%)' }} />
+                <div style={{ aspectRatio: '3/4', background: 'linear-gradient(135deg, #E0D8C8 0%, #C8BFB0 100%)' }} />
+                <div style={{ aspectRatio: '3/4', background: 'linear-gradient(135deg, #C8BFB0 0%, #E8E0D0 100%)' }} />
               </>
             )}
           </div>
 
-          {/* ── RIGHT — client component handles accordion + interactivity ── */}
+          {/* ── RIGHT ── */}
           <ProductClient product={product} whatsappUrl={whatsappUrl} />
-
         </div>
       </div>
 
