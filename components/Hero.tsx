@@ -49,8 +49,8 @@ export function Hero() {
     frameRefs.current.forEach((el, i) => {
       if (!el) return;
       if (i > 0) {
-        const { x, y } = randXY(8);
-        gsap.set(el, { rotation: randTilt(i * 2.5), x, y, opacity: 0, y: 120, scale: 0.93 });
+        const { x } = randXY(8);
+        gsap.set(el, { rotation: randTilt(i * 2.5), x, y: 120, opacity: 0, scale: 0.93 });
       } else {
         gsap.set(el, { opacity: 0, y: 120, scale: 0.93 });
       }
@@ -149,7 +149,6 @@ export function Hero() {
           }
         }
 
-        /* ── TEXT ── */
         .nk-text-side {
           flex: 0 0 auto;
           display: flex;
@@ -172,7 +171,6 @@ export function Hero() {
           }
         }
 
-        /* ── DIVIDER ── */
         .nk-divider {
           width: 1px;
           align-self: stretch;
@@ -189,7 +187,6 @@ export function Hero() {
         }
         @media (max-width: 767px) { .nk-divider { display: none; } }
 
-        /* ── CARD SIDE ── */
         .nk-card-side {
           flex: 1;
           display: flex;
@@ -210,7 +207,6 @@ export function Hero() {
           }
         }
 
-        /* ── FRAME WRAP ── */
         .nk-frames-wrap {
           position: relative;
           width: 340px; height: 415px;
@@ -239,7 +235,6 @@ export function Hero() {
           width: 100%; height: 100%; object-fit: cover; display: block;
         }
 
-        /* ── GOLD FRAME ── */
         .nk-frame-border {
           position: absolute; pointer-events: none; z-index: 10; inset: -13px;
         }
@@ -273,7 +268,6 @@ export function Hero() {
         .nk-fb-corner-bl { bottom:0; left:0;  background:#C8920A; }
         .nk-fb-corner-br { bottom:0; right:0; background:#D4A820; }
 
-        /* toned-down outer dark ring */
         .nk-frame-outer-edge {
           position: absolute; inset: -14px;
           border: 1px solid rgba(60,35,5,0.35);
@@ -289,8 +283,6 @@ export function Hero() {
           border: 1px solid rgba(60,35,5,0.25);
           pointer-events: none; z-index: 11;
         }
-
-        /* soft shadow — no more black void */
         .nk-frame-shadow {
           position: absolute; inset: -13px;
           box-shadow:
@@ -321,7 +313,6 @@ export function Hero() {
           pointer-events: none; z-index: 0;
         }
 
-        /* ── TYPOGRAPHY ── */
         .hero-eyebrow-rule {
           display: block; width: 28px; height: 1px;
           background: rgba(80,45,10,0.35);
@@ -331,10 +322,10 @@ export function Hero() {
           color: rgba(80,45,10,0.6) !important;
           letter-spacing: 0.28em !important;
         }
-        .hero-h1   { color: #2A1505 !important; }
-        .hero-body { color: rgba(50,28,8,0.55) !important; }
+        .hero-h1      { color: #2A1505 !important; }
+        .hero-body    { color: rgba(50,28,8,0.55) !important; }
         .hero-body-em { color: rgba(30,15,3,0.85) !important; }
-        .hero-email { color: rgba(80,45,10,0.4) !important; }
+        .hero-email   { color: rgba(80,45,10,0.4) !important; }
 
         .hero-cta {
           border: 1px solid rgba(40,20,5,0.22) !important;
@@ -356,7 +347,6 @@ export function Hero() {
           background: rgba(40,20,5,0.14) !important;
         }
 
-        /* ── DOTS ── */
         .nk-frame-dots {
           position: absolute; bottom: -28px; left: 50%;
           transform: translateX(-50%);
@@ -367,11 +357,8 @@ export function Hero() {
           background: rgba(40,20,5,0.2);
           transition: background 0.4s, transform 0.4s;
         }
-        .nk-frame-dot.active {
-          background: #5C3010; transform: scale(1.5);
-        }
+        .nk-frame-dot.active { background: #5C3010; transform: scale(1.5); }
 
-        /* ── MOBILE LABEL ── */
         .nk-mobile-label {
           display: none;
           text-align: center;
@@ -387,7 +374,6 @@ export function Hero() {
 
       <div className="nk-hero-layout">
 
-        {/* ── TEXT ── */}
         <div className="nk-text-side hero-copy">
           <span className="hero-eyebrow-rule" />
           <p
@@ -457,7 +443,6 @@ export function Hero() {
 
         <div className="nk-divider" />
 
-        {/* ── CARDS ── */}
         <div className="nk-card-side">
           <div style={{ position: 'relative' }}>
             <div className="nk-frames-wrap">
