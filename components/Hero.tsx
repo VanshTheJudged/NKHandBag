@@ -319,13 +319,28 @@ export function Hero() {
           margin-bottom: 12px;
         }
         .hero-eyebrow {
-          color: rgba(80,45,10,0.6) !important;
-          letter-spacing: 0.28em !important;
-        }
-        .hero-h1      { color: #2A1505 !important; }
-        .hero-body    { color: rgba(50,28,8,0.55) !important; }
-        .hero-body-em { color: rgba(30,15,3,0.85) !important; }
-        .hero-email   { color: rgba(80,45,10,0.4) !important; }
+  color: #1A0D02 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.28em !important;
+}
+.hero-h1      { color: #1A0D02 !important; }
+.hero-body    { color: #1A0D02 !important; font-weight: 400 !important; }
+.hero-body-em { color: #1A0D02 !important; font-weight: 700 !important; }
+.hero-email   { color: rgba(26,13,2,0.55) !important; }
+
+.hero-trust {
+  color: #1A0D02 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+}
+.hero-trust-dot {
+  display: inline-block;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(26,13,2,0.5);
+  margin: 0 8px;
+  vertical-align: middle;
+}
 
         .hero-cta {
           border: 1px solid rgba(40,20,5,0.22) !important;
@@ -397,11 +412,18 @@ export function Hero() {
           </h1>
 
           <p
-            className="hero-body mb-9 text-[13px] leading-relaxed"
+            className="hero-body mb-4 text-[13px] leading-relaxed"
             style={{ fontFamily: 'var(--font-outfit), sans-serif', maxWidth: '200px' }}
           >
             Bespoke designs and personalized perfection.{' '}
             <span className="hero-body-em" style={{ fontWeight: 500 }}>Mumbai, India.</span>
+          </p>
+
+          <p
+            className="hero-trust mb-9 text-[10px] uppercase"
+            style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
+          >
+            Trusted Craftsmanship<span className="hero-trust-dot" />Shipped Worldwide
           </p>
 
           <div className="mb-7">

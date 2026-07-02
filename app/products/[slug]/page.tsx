@@ -19,7 +19,7 @@ export default async function ProductDetailPage({
   const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210';
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919315101359';
   const whatsappMessage = encodeURIComponent(
     `Hi, I'm interested in the ${product.name}. Could you please share more details and pricing?`
   );
@@ -88,7 +88,13 @@ export default async function ProductDetailPage({
           }}
         >
           {/* ── LEFT — image grid ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: product.images.length > 1 ? '1fr 1fr' : '1fr',
+              gap: '0.75rem',
+            }}
+          >
             {product.images.length > 0 ? (
               product.images.map((img, i) => (
                 <div
@@ -97,15 +103,15 @@ export default async function ProductDetailPage({
                     position: 'relative',
                     overflow: 'hidden',
                     backgroundColor: '#E8E0D0',
-                    gridColumn: i === 0 ? 'span 2' : 'span 1',
-                    aspectRatio: i === 0 ? '4/3' : '3/4',
+                    gridColumn: i === 0 && product.images.length > 1 ? 'span 2' : 'span 1',
+                    aspectRatio: product.images.length === 1 ? '4/5' : i === 0 ? '4/3' : '3/4',
                   }}
                 >
                   <Image
                     src={img}
                     alt={`${product.name} – image ${i + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     priority={i === 0}
                   />

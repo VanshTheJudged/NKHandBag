@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { products, type Product } from '@/data/products';
@@ -10,8 +11,8 @@ import { products, type Product } from '@/data/products';
 const placeholders: Product[] = [
   {
     slug: '#',
-    name: 'CLASSIC TOTE',
-    category: 'Tote',
+    name: 'SAMPLE BAG',
+    category: 'Bags',
     detail: 'Full-grain leather / Brass hardware',
     description: '',
     howItsMade: '',
@@ -21,20 +22,20 @@ const placeholders: Product[] = [
   },
   {
     slug: '#',
-    name: 'SHOULDER BAG',
-    category: 'Shoulder',
-    detail: 'Pebbled leather / Gold plating',
+    name: 'SAMPLE CAP',
+    category: 'Cap',
+    detail: 'Cotton twill / Embroidered',
     description: '',
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#2C2C2C', '#D4C5A0', '#8B7355'],
+    colors: ['#2C2C2C', '#D4C5A0'],
   },
   {
     slug: '#',
-    name: 'SLING PRO',
-    category: 'Sling',
-    detail: 'Nylon canvas / Silver hardware',
+    name: 'SAMPLE RAW MATERIAL',
+    category: 'Raw Materials',
+    detail: 'Sold by the metre',
     description: '',
     howItsMade: '',
     materials: [],
@@ -43,9 +44,9 @@ const placeholders: Product[] = [
   },
   {
     slug: '#',
-    name: 'MINI CLUTCH',
-    category: 'Clutch',
-    detail: 'Suede leather / Antique brass',
+    name: 'SAMPLE PEN',
+    category: 'Customisable Pens',
+    detail: 'Engraved / Gift-ready',
     description: '',
     howItsMade: '',
     materials: [],
@@ -54,22 +55,45 @@ const placeholders: Product[] = [
   },
   {
     slug: '#',
-    name: 'EVERYDAY WALLET',
-    category: 'Wallet',
-    detail: 'Smooth leather / Contrast stitching',
+    name: 'SAMPLE JEWELLERY BOX',
+    category: 'Jewellery Boxes',
+    detail: 'Velvet lined',
     description: '',
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#8B7355', '#2C2C2C', '#D4C5A0'],
+    colors: ['#8B7355', '#2C2C2C'],
   },
 ];
 
-const CATEGORIES = ['All', 'Tote', 'Shoulder', 'Sling', 'Clutch', 'Wallet'];
+const CATEGORIES = ['All', 'Bags', 'Cap', 'Raw Materials', 'Customisable Pens', 'Jewellery Boxes'];
+
+// Maps the slug used in URLs (?category=cap) to the display/filter label
+const SLUG_TO_LABEL: Record<string, string> = {
+  bags: 'Bags',
+  cap: 'Cap',
+  'raw-materials': 'Raw Materials',
+  'customisable-pens': 'Customisable Pens',
+  'jewellery-boxes': 'Jewellery Boxes',
+};
 
 export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', backgroundColor: '#F5EFE6' }} />}>
+      <ProductsPageInner />
+    </Suspense>
+  );
+}
+
+function ProductsPageInner() {
+  const searchParams = useSearchParams();
+  const categorySlug = searchParams.get('category');
+  const initialActive = categorySlug && SLUG_TO_LABEL[categorySlug]
+    ? SLUG_TO_LABEL[categorySlug]
+    : 'All';
+
   const allProducts = products.length > 0 ? products : placeholders;
-  const [active, setActive] = useState('All');
+  const [active, setActive] = useState(initialActive);
 
   const filtered = active === 'All'
     ? allProducts
@@ -140,10 +164,7 @@ export default function ProductsPage() {
           .nk-pl-tagline { text-align: right; }
         }
 
-        /* ── FILTER BAR ──
-           Mobile: wrap into a neat pill-grid, no overflow
-           Desktop: single scrollable row
-        */
+        /* ── FILTER BAR ── */
         .nk-pl-filter-bar {
           border-bottom: 1px solid rgba(30,35,24,0.08);
           padding: 0.875rem 1.25rem;
@@ -163,7 +184,6 @@ export default function ProductsPage() {
         .nk-pl-filter-inner {
           max-width: 1600px;
           margin: 0 auto;
-          /* mobile: wrap pills */
           display: flex;
           flex-wrap: wrap;
           gap: 0.4rem;
@@ -183,7 +203,6 @@ export default function ProductsPage() {
           color: rgba(30,35,24,0.45);
           background: rgba(30,35,24,0.05);
           border: none;
-          /* larger tap target on mobile */
           padding: 0.5rem 0.9rem;
           cursor: pointer;
           transition: color 0.2s, background 0.2s;
@@ -365,7 +384,7 @@ export default function ProductsPage() {
             <h1 className="nk-pl-heading">All Products</h1>
           </div>
           <p className="nk-pl-tagline">
-            Every bag handcrafted in Mumbai. Built for the everyday,
+            Every piece handcrafted in Mumbai. Built for the everyday,
             designed to last a lifetime.
           </p>
         </div>

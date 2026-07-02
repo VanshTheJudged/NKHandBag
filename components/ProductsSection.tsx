@@ -2,20 +2,34 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { products } from '@/data/products';
+import { products, type Product } from '@/data/products';
+
+const CATEGORY_ORDER = ['Bags', 'Cap', 'Raw Materials', 'Customisable Pens', 'Jewellery Boxes'];
 
 const placeholders = [
-  { id: 'p1', name: 'NK HAND BAG CLASSIC', category: 'Tote' },
-  { id: 'p2', name: 'NK SHOULDER BAG', category: 'Shoulder' },
-  { id: 'p3', name: 'NK SLING PRO', category: 'Sling' },
-  { id: 'p4', name: 'NK TOTE MINI', category: 'Tote' },
-  { id: 'p5', name: 'NK CLUTCH LUXE', category: 'Clutch' },
+  { id: 'p1', name: 'NK BAGS CLASSIC', category: 'Bags' },
+  { id: 'p2', name: 'NK WOVEN CAP', category: 'Cap' },
+  { id: 'p3', name: 'NK RAW MATERIAL', category: 'Raw Materials' },
+  { id: 'p4', name: 'NK CUSTOM PEN', category: 'Customisable Pens' },
+  { id: 'p5', name: 'NK JEWELLERY BOX', category: 'Jewellery Boxes' },
 ];
 
+// Picks one product per category, in CATEGORY_ORDER.
+// Prefers a featured product within a category if one exists, else the first found.
+// Skips a category entirely if there's no product for it yet.
+function getOneProductPerCategory(allProducts: Product[]): Product[] {
+  return CATEGORY_ORDER
+    .map((cat) => {
+      const inCategory = allProducts.filter((p) => p.category === cat);
+      if (inCategory.length === 0) return null;
+      return inCategory.find((p) => p.featured) || inCategory[0];
+    })
+    .filter((p): p is Product => p !== null);
+}
+
 export function ProductsSection() {
-  const displayProducts = products.length > 0
-    ? products.filter((p) => p.featured).slice(0, 5)
-    : null;
+  const oneProductPerCategory = products.length > 0 ? getOneProductPerCategory(products) : [];
+  const displayProducts = oneProductPerCategory.length > 0 ? oneProductPerCategory : null;
 
   return (
     <>
@@ -169,7 +183,7 @@ export function ProductsSection() {
                   <ProductCard
                     key={product.slug}
                     href={`/products/${product.slug}`}
-                    image={product.images[0]}
+                    image={product.images[0] || null}
                     name={product.name}
                     category={product.category}
                   />

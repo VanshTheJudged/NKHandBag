@@ -47,6 +47,18 @@ export function ProductClient({ product, whatsappUrl }: Props) {
           text-transform: uppercase;
           margin: 0;
         }
+        .pdp-subcat-tag {
+          font-family: var(--font-jetbrains-mono), monospace;
+          font-size: 8px;
+          letter-spacing: 0.18em;
+          color: #6B5B45;
+          text-transform: uppercase;
+          background-color: #F0EBE1;
+          border: 1px solid rgba(28,20,16,0.12);
+          border-radius: 999px;
+          padding: 0.2rem 0.6rem;
+          line-height: 1.4;
+        }
         .pdp-name {
           font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
           font-weight: 300;
@@ -170,9 +182,12 @@ export function ProductClient({ product, whatsappUrl }: Props) {
       <div className="pdp-right">
 
         {/* Eyebrow */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#9A8A74', flexShrink: 0 }} />
           <p className="pdp-eyebrow">{product.category}</p>
+          {product.subCategory && (
+            <span className="pdp-subcat-tag">{product.subCategory}</span>
+          )}
         </div>
 
         {/* Name */}
