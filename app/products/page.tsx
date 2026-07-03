@@ -18,7 +18,7 @@ const placeholders: Product[] = [
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#1A1A1A', '#8B7355'],
+    customisable: ['Colour', 'Handles'],
   },
   {
     slug: '#',
@@ -29,7 +29,7 @@ const placeholders: Product[] = [
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#2C2C2C', '#D4C5A0'],
+    customisable: ['Colour', 'Logo Print'],
   },
   {
     slug: '#',
@@ -40,7 +40,7 @@ const placeholders: Product[] = [
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#1A1A1A'],
+    customisable: ['Colour'],
   },
   {
     slug: '#',
@@ -51,7 +51,7 @@ const placeholders: Product[] = [
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#6B4F3A', '#1A1A1A'],
+    customisable: ['Engraving', 'Finish'],
   },
   {
     slug: '#',
@@ -62,7 +62,7 @@ const placeholders: Product[] = [
     howItsMade: '',
     materials: [],
     images: [],
-    colors: ['#8B7355', '#2C2C2C'],
+    customisable: ['Colour', 'Lining'],
   },
 ];
 
@@ -255,7 +255,7 @@ function ProductsPageInner() {
           aspect-ratio: 3/4;
           width: 100%;
           overflow: hidden;
-          background-color: #E8E0D0;
+          background-color: #FFFFFF;
         }
         .nk-pl-card-img-inner {
           position: absolute;
@@ -328,24 +328,14 @@ function ProductsPageInner() {
           margin: 0;
           line-height: 1.6;
         }
-        .nk-pl-card-swatches {
-          display: flex;
-          align-items: center;
-          gap: 0.3rem;
-          margin-top: 0.35rem;
+        .nk-pl-card-custom {
+          font-family: var(--font-jetbrains-mono), monospace;
+          font-size: 8px;
+          letter-spacing: 0.14em;
+          color: #3D4A28;
+          text-transform: uppercase;
+          margin: 0.35rem 0 0;
         }
-        .nk-pl-card-swatch {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          border: 1.5px solid rgba(255,255,255,0.15);
-          outline: 1px solid transparent;
-          transition: outline-color 0.2s;
-        }
-        @media (min-width: 1024px) {
-          .nk-pl-card-swatch { width: 12px; height: 12px; }
-        }
-        .nk-pl-card-swatch:hover { outline-color: rgba(30,35,24,0.4); }
         .nk-pl-card-price {
           font-family: var(--font-jetbrains-mono), monospace;
           font-size: 8px;
@@ -436,7 +426,7 @@ function ProductCard({ product }: { product: Product }) {
               src={product.images[0]}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             />
           </div>
@@ -454,16 +444,8 @@ function ProductCard({ product }: { product: Product }) {
         {product.detail && (
           <p className="nk-pl-card-detail">{product.detail}</p>
         )}
-        {product.colors && product.colors.length > 0 && (
-          <div className="nk-pl-card-swatches">
-            {product.colors.map((color) => (
-              <span
-                key={color}
-                className="nk-pl-card-swatch"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
+        {product.customisable && product.customisable.length > 0 && (
+          <p className="nk-pl-card-custom">Fully Customisable</p>
         )}
         <p className="nk-pl-card-price">Price on Inquiry</p>
       </div>

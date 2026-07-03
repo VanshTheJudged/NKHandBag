@@ -102,6 +102,24 @@ export function ProductsSection() {
           font-family: var(--font-outfit), sans-serif;
           font-weight: 500;
         }
+
+        /* ── Frosted panel housing the whole product grid ── */
+        .nk-grid-panel {
+          background-color: rgba(246,238,230,0.72);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(255,255,255,0.4);
+          border-radius: 18px;
+          padding: 1.5rem 1rem;
+          box-shadow: 0 20px 60px -20px rgba(28,20,16,0.12);
+        }
+        @media (min-width: 1024px) {
+          .nk-grid-panel {
+            border-radius: 28px;
+            padding: 3rem 2.5rem;
+          }
+        }
+
         .nk-card-bg {
           background-color: #E8E0D0;
         }
@@ -176,27 +194,29 @@ export function ProductsSection() {
             </p>
           </div>
 
-          {/* Product grid */}
-          <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-5 lg:gap-x-5 lg:gap-y-16">
-            {displayProducts
-              ? displayProducts.map((product) => (
-                  <ProductCard
-                    key={product.slug}
-                    href={`/products/${product.slug}`}
-                    image={product.images[0] || null}
-                    name={product.name}
-                    category={product.category}
-                  />
-                ))
-              : placeholders.map((p) => (
-                  <ProductCard
-                    key={p.id}
-                    href="/products"
-                    image={null}
-                    name={p.name}
-                    category={p.category}
-                  />
-                ))}
+          {/* Product grid — housed in a frosted panel so it stays legible over the background art */}
+          <div className="nk-grid-panel">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-5 lg:gap-x-5 lg:gap-y-16">
+              {displayProducts
+                ? displayProducts.map((product) => (
+                    <ProductCard
+                      key={product.slug}
+                      href={`/products/${product.slug}`}
+                      image={product.images[0] || null}
+                      name={product.name}
+                      category={product.category}
+                    />
+                  ))
+                : placeholders.map((p) => (
+                    <ProductCard
+                      key={p.id}
+                      href="/products"
+                      image={null}
+                      name={p.name}
+                      category={p.category}
+                    />
+                  ))}
+            </div>
           </div>
 
           {/* View all */}

@@ -77,13 +77,25 @@ export function ProductClient({ product, whatsappUrl }: Props) {
           margin: 0;
           line-height: 1.7;
         }
-        .pdp-colour-label {
+        .pdp-custom-label {
           font-family: var(--font-jetbrains-mono), monospace;
           font-size: 9px;
           letter-spacing: 0.28em;
           color: #9A8A74;
           text-transform: uppercase;
           margin: 0 0 0.6rem;
+        }
+        .pdp-custom-tag {
+          font-family: var(--font-jetbrains-mono), monospace;
+          font-size: 9px;
+          letter-spacing: 0.14em;
+          color: #3D4A28;
+          text-transform: uppercase;
+          background-color: rgba(61,74,40,0.08);
+          border: 1px solid rgba(61,74,40,0.25);
+          border-radius: 999px;
+          padding: 0.35rem 0.85rem;
+          line-height: 1.4;
         }
         .pdp-pricing-label {
           font-family: var(--font-jetbrains-mono), monospace;
@@ -198,26 +210,13 @@ export function ProductClient({ product, whatsappUrl }: Props) {
           <p className="pdp-detail" style={{ marginBottom: '1.5rem' }}>{product.detail}</p>
         )}
 
-        {/* Colours */}
-        {product.colors && product.colors.length > 0 && (
+        {/* Customisation */}
+        {product.customisable && product.customisable.length > 0 && (
           <div style={{ marginBottom: '2rem' }}>
-            <p className="pdp-colour-label">Available Colours</p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {product.colors.map((color) => (
-                <button
-                  key={color}
-                  style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    backgroundColor: color,
-                    border: '2px solid transparent',
-                    outline: '1px solid rgba(154,138,116,0.3)',
-                    cursor: 'pointer',
-                    transition: 'outline-color 0.2s',
-                  }}
-                  aria-label={color}
-                />
+            <p className="pdp-custom-label">Fully Customisable</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {product.customisable.map((item) => (
+                <span key={item} className="pdp-custom-tag">{item}</span>
               ))}
             </div>
           </div>

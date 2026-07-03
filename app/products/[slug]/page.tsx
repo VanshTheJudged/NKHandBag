@@ -102,7 +102,7 @@ export default async function ProductDetailPage({
                   style={{
                     position: 'relative',
                     overflow: 'hidden',
-                    backgroundColor: '#E8E0D0',
+                    backgroundColor: '#FFFFFF',
                     gridColumn: i === 0 && product.images.length > 1 ? 'span 2' : 'span 1',
                     aspectRatio: product.images.length === 1 ? '4/5' : i === 0 ? '4/3' : '3/4',
                   }}
