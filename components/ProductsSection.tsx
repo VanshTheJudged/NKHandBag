@@ -103,19 +103,12 @@ export function ProductsSection() {
           font-weight: 500;
         }
 
-        /* ── Frosted panel housing the whole product grid ── */
+        /* ── Grid wrapper — no longer frosted, just spacing ── */
         .nk-grid-panel {
-          background-color: rgba(246,238,230,0.72);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          border: 1px solid rgba(255,255,255,0.4);
-          border-radius: 18px;
           padding: 1.5rem 1rem;
-          box-shadow: 0 20px 60px -20px rgba(28,20,16,0.12);
         }
         @media (min-width: 1024px) {
           .nk-grid-panel {
-            border-radius: 28px;
             padding: 3rem 2.5rem;
           }
         }
@@ -123,28 +116,54 @@ export function ProductsSection() {
         .nk-card-bg {
           background-color: #E8E0D0;
         }
+
         .nk-pill {
           background-color: #1C1410;
           color: #F5EFE6;
           font-family: var(--font-jetbrains-mono), monospace;
         }
+
+        /* ── Frosted chip — shared glass style for category / name / price ── */
+        .nk-frost-chip {
+          background-color: rgba(246,238,230,0.55);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.5);
+          border-radius: 999px;
+          box-shadow: 0 6px 16px -10px rgba(28,20,16,0.18);
+          width: fit-content;
+          transition: background-color 0.2s, border-color 0.2s;
+        }
+        .group:hover .nk-frost-chip {
+          background-color: rgba(246,238,230,0.75);
+        }
+
         .nk-category-label {
           color: #9A8A74;
           font-family: var(--font-jetbrains-mono), monospace;
           letter-spacing: 0.2em;
+          padding: 0.3rem 0.7rem;
+        }
+
+        .nk-name-chip {
+          padding: 0.4rem 0.85rem;
+        }
+        .group:hover .nk-name-chip {
+          border-color: rgba(61,74,40,0.25);
         }
         .nk-product-name {
           color: #1C1410;
           font-family: var(--font-outfit), sans-serif;
           transition: color 0.2s;
         }
-        .nk-product-name:hover {
+        .group:hover .nk-product-name {
           color: #3D4A28;
         }
         .nk-price {
           color: #9A8A74;
           font-family: var(--font-jetbrains-mono), monospace;
           letter-spacing: 0.15em;
+          padding: 0.3rem 0.7rem;
         }
         .nk-view-all {
           color: #6B5B45;
@@ -194,9 +213,9 @@ export function ProductsSection() {
             </p>
           </div>
 
-          {/* Product grid — housed in a frosted panel so it stays legible over the background art */}
+          {/* Product grid — plain spacing wrapper; frost now lives on each text chip */}
           <div className="nk-grid-panel">
-            <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-5 lg:gap-x-5 lg:gap-y-16">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-5 lg:gap-x-6 lg:gap-y-20">
               {displayProducts
                 ? displayProducts.map((product) => (
                     <ProductCard
@@ -271,14 +290,16 @@ function ProductCard({ href, image, name, category }: CardProps) {
       </div>
 
       {/* Info */}
-      <div className="mt-3 flex flex-col gap-1 lg:mt-4">
-        <p className="nk-category-label text-[10px] lg:text-[11px]">
+      <div className="mt-3 flex flex-col gap-1.5 lg:mt-4">
+        <p className="nk-category-label nk-frost-chip text-[10px] lg:text-[11px]">
           {category.toUpperCase()}
         </p>
-        <h3 className="nk-product-name text-xs font-semibold leading-snug sm:text-sm lg:text-base">
-          {name}
-        </h3>
-        <p className="nk-price mt-0.5 text-[10px] lg:mt-1 lg:text-[11px]">
+        <div className="nk-name-chip nk-frost-chip">
+          <h3 className="nk-product-name text-xs font-semibold leading-snug sm:text-sm lg:text-base">
+            {name}
+          </h3>
+        </div>
+        <p className="nk-price nk-frost-chip mt-0.5 text-[10px] lg:mt-1 lg:text-[11px]">
           PRICE ON INQUIRY
         </p>
       </div>
