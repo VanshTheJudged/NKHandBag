@@ -814,7 +814,7 @@ export const products: Product[] = [
     description: 'A three-pen ballpoint set in blue, gunmetal, and red with a glossy barrel finish and silver clip.',
     howItsMade: 'Precision-turned metal barrels finished in a glossy coating across three colourways, boxed as a set.',
     materials: ['Metal alloy body', 'Refill: ballpoint'],
-    images: ['/products/pens/pen6Best.jpeg'],
+    images: ['/products/pens/pen6best.jpeg'],
     customisable: PEN_CUSTOMISATION,
   },
   {
