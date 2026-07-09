@@ -9,7 +9,7 @@ const reviews = [
     label: 'Customer 01',
     title: 'Inside The Creator Series: A Journey Unfolds',
     text: 'Local creators efficiently organize their equipment to maximize productivity and creativity throughout their busy workdays. The NKHANDBAG tote has been my daily companion for over a year now.',
-    image: null,
+    image: '/images/reviews/hanifa.jpg',
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const reviews = [
     label: 'Customer 02',
     title: 'Craftsmanship That Speaks For Itself',
     text: 'I have been searching for a bag that is both functional and elegant. NKHANDBAG delivered exactly that. The stitching, the leather, the hardware — every detail is intentional and beautifully executed.',
-    image: null,
+    image: '/images/reviews/priya.jpg',
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const reviews = [
     label: 'Customer 03',
     title: 'Mumbai Made, World Ready',
     text: 'What surprised me most was how well the bag holds its shape even after months of daily use. It still looks brand new. I get compliments everywhere I take it — from office meetings to weekend trips.',
-    image: null,
+    image: '/images/reviews/arjun.jpg',
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const reviews = [
     label: 'Customer 04',
     title: 'Worth Every Rupee And Then Some',
     text: 'The shoulder bag I ordered exceeded every expectation. The leather has a warmth and texture that you cannot find in mass-produced bags. This is what genuine craftsmanship feels like.',
-    image: null,
+    image: '/images/reviews/sara.jpg',
   },
 ];
 
@@ -152,6 +152,15 @@ export function TestimonialsSection() {
           width: 38%;
           flex-shrink: 0;
           min-height: 280px;
+          position: relative;
+          overflow: hidden;
+        }
+        .nk-card-img-placeholder img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
         .nk-card-content {
           padding: 2rem 2rem 1.75rem;
@@ -304,9 +313,9 @@ function ReviewCard({ review }: { review: Review }) {
   return (
     <div className="nk-review-card">
       <div className="nk-card-img-placeholder hidden sm:block">
-        {review.image && (
-          <img src={review.image} alt={review.name} className="h-full w-full object-cover" />
-        )}
+        {review.image ? (
+          <img src={review.image} alt={review.name} />
+        ) : null}
       </div>
       <div className="nk-card-content flex-1">
         <div>
@@ -317,7 +326,6 @@ function ReviewCard({ review }: { review: Review }) {
         <div>
           <hr className="nk-card-divider" />
           <p className="nk-card-author-name">{review.name}</p>
-          <p className="nk-card-author-label">{review.label}</p>
         </div>
       </div>
     </div>

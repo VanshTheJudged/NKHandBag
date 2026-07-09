@@ -5,11 +5,11 @@ const footerNav = [
     heading: 'SHOP',
     links: [
       { label: 'All Products', href: '/products' },
-      { label: 'Totes', href: '/products?category=tote' },
-      { label: 'Shoulder Bags', href: '/products?category=shoulder' },
-      { label: 'Sling Bags', href: '/products?category=sling' },
-      { label: 'Clutches', href: '/products?category=clutch' },
-      { label: 'Wallets', href: '/products?category=wallet' },
+      { label: 'Bags', href: '/products?category=bags' },
+      { label: 'Cap', href: '/products?category=cap' },
+      { label: 'Raw Materials', href: '/products?category=raw-materials' },
+      { label: 'Customisable Pens', href: '/products?category=customisable-pens' },
+      { label: 'Jewellery Boxes', href: '/products?category=jewellery-boxes' },
     ],
   },
   {
@@ -40,28 +40,44 @@ export function Footer() {
         .nk-footer {
           background-color: #1E2318;
           color: #F5EFE6;
-          /* KEY FIX: prevent any child from causing horizontal overflow */
           overflow-x: hidden;
+        }
+
+        /* ── SHARED CONTAINER WIDTH ──
+           All three panels (top, nav, bottom) now share the same
+           max-width + horizontal padding so their content lines up
+           on the same left/right edges instead of drifting between
+           1600px / 1400px containers. */
+        .nk-footer-top,
+        .nk-footer-nav,
+        .nk-footer-bottom {
+          padding: 2.5rem 1.25rem;
+        }
+        @media (min-width: 1024px) {
+          .nk-footer-top,
+          .nk-footer-nav {
+            padding: 4rem 3rem;
+          }
+        }
+
+        .nk-footer-top-inner,
+        .nk-footer-nav-inner,
+        .nk-footer-bottom-inner {
+          max-width: 1400px;
+          margin: 0 auto;
         }
 
         /* ── TOP PANEL ── */
         .nk-footer-top {
           background-color: #252B1C;
           border-bottom: 1px solid rgba(245,239,230,0.08);
-          padding: 2.5rem 1.25rem;
-        }
-        @media (min-width: 1024px) {
-          .nk-footer-top {
-            padding: 4rem 3rem;
-          }
         }
 
         .nk-footer-top-inner {
-          max-width: 1400px;
-          margin: 0 auto;
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           gap: 2rem;
         }
         @media (min-width: 1024px) {
@@ -69,11 +85,10 @@ export function Footer() {
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            gap: 4rem;
+            gap: 5rem;
           }
         }
 
-        /* Wraps eyebrow/heading/desc/contact list — centered on mobile, left-aligned on desktop */
         .nk-footer-top-text {
           display: flex;
           flex-direction: column;
@@ -82,9 +97,9 @@ export function Footer() {
         }
         @media (min-width: 1024px) {
           .nk-footer-top-text {
-            align-items: flex-start;
-            text-align: left;
-            max-width: 500px;
+            align-items: center;
+            text-align: center;
+            max-width: 560px;
           }
         }
         .nk-footer-contact-list {
@@ -93,18 +108,12 @@ export function Footer() {
           gap: 0.75rem;
           align-items: center;
         }
-        @media (min-width: 1024px) {
-          .nk-footer-contact-list {
-            align-items: flex-start;
-          }
-        }
 
         .nk-footer-img-placeholder {
           background: linear-gradient(145deg, #8B6347 0%, #6B4A30 50%, #3D2810 100%);
           border-radius: 8px;
           overflow: hidden;
           width: 100%;
-          /* FIX: on mobile the 4/3 ratio was very tall; cap the height */
           aspect-ratio: 16/9;
           max-height: 220px;
         }
@@ -157,30 +166,31 @@ export function Footer() {
         .nk-footer-nav {
           background-color: #1E2318;
           border-bottom: 1px solid rgba(245,239,230,0.08);
-          padding: 2.5rem 1.25rem;
-        }
-        @media (min-width: 1024px) {
-          .nk-footer-nav {
-            padding: 3.5rem 3rem;
-          }
         }
 
         .nk-footer-nav-inner {
-          max-width: 1400px;
-          margin: 0 auto;
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(2, minmax(140px, 200px));
+          justify-content: center;
           gap: 2rem 1.5rem;
         }
         @media (min-width: 640px) {
           .nk-footer-nav-inner {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(150px, 220px));
+            justify-content: center;
           }
         }
         @media (min-width: 1024px) {
           .nk-footer-nav-inner {
-            gap: 2rem 4rem;
+            gap: 2.5rem 7rem;
           }
+        }
+
+        .nk-footer-nav-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
         }
 
         .nk-footer-nav-heading {
@@ -201,6 +211,7 @@ export function Footer() {
           transition: color 0.2s;
           display: block;
           line-height: 2;
+          text-align: center;
         }
         .nk-footer-nav-link:hover {
           color: rgba(245,239,230,0.85);
@@ -212,20 +223,21 @@ export function Footer() {
           border-top: 1px solid rgba(245,239,230,0.06);
           padding: 0.5rem 1rem 0.75rem;
           text-align: center;
-          overflow: hidden; /* clips the intentionally oversized text */
+          overflow: hidden;
         }
         .nk-footer-brand-name {
-  font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(28px, 8vw, 200px);  /* was clamp(48px, 14vw, 200px) */
-  line-height: 1;
-  color: rgba(245,239,230,0.07);
-  letter-spacing: 0.05em;
-  white-space: nowrap;  /* restored */
-  user-select: none;
-  word-break: normal;   /* remove the break-all */
-  margin: 0; 
-}
+          font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+          font-weight: 700;
+          font-size: clamp(28px, 8vw, 200px);
+          line-height: 1;
+          color: rgba(245,239,230,0.07);
+          letter-spacing: 0.05em;
+          white-space: nowrap;
+          user-select: none;
+          word-break: normal;
+          margin: 0;
+          text-align: center;
+        }
         .nk-footer-tagline {
           font-family: var(--font-jetbrains-mono), monospace;
           font-size: 9px;
@@ -233,17 +245,15 @@ export function Footer() {
           color: rgba(245,239,230,0.2);
           text-transform: uppercase;
           margin-top: 0.25rem;
+          text-align: center;
         }
 
         /* ── BOTTOM BAR ── */
         .nk-footer-bottom {
           background-color: #1E2318;
           border-top: 1px solid rgba(245,239,230,0.06);
-          padding: 1.25rem;
         }
         .nk-footer-bottom-inner {
-          max-width: 1400px;
-          margin: 0 auto;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -265,7 +275,6 @@ export function Footer() {
           color: rgba(245,239,230,0.22);
           text-transform: uppercase;
         }
-        /* FIX: let social links wrap on narrow screens */
         .nk-footer-social-wrap {
           display: flex;
           align-items: center;
@@ -341,7 +350,7 @@ export function Footer() {
         <div className="nk-footer-nav">
           <div className="nk-footer-nav-inner">
             {footerNav.map((col) => (
-              <div key={col.heading}>
+              <div key={col.heading} className="nk-footer-nav-col">
                 <p className="nk-footer-nav-heading">{col.heading}</p>
                 <ul>
                   {col.links.map((link) => (
@@ -366,7 +375,6 @@ export function Footer() {
         {/* ── BOTTOM BAR ── */}
         <div className="nk-footer-bottom">
           <div className="nk-footer-bottom-inner">
-            {/* FIX: replaced inline flex span nesting with a dedicated wrapping class */}
             <div className="nk-footer-social-wrap">
               {['Instagram', 'WhatsApp', 'Facebook'].map((s, i) => (
                 <span key={s} className="flex items-center gap-1">
