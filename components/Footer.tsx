@@ -59,21 +59,50 @@ export function Footer() {
         .nk-footer-top-inner {
           max-width: 1400px;
           margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           gap: 2rem;
         }
         @media (min-width: 1024px) {
           .nk-footer-top-inner {
-            grid-template-columns: 300px 1fr;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             gap: 4rem;
-            align-items: start;
+          }
+        }
+
+        /* Wraps eyebrow/heading/desc/contact list — centered on mobile, left-aligned on desktop */
+        .nk-footer-top-text {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        @media (min-width: 1024px) {
+          .nk-footer-top-text {
+            align-items: flex-start;
+            text-align: left;
+            max-width: 500px;
+          }
+        }
+        .nk-footer-contact-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          align-items: center;
+        }
+        @media (min-width: 1024px) {
+          .nk-footer-contact-list {
+            align-items: flex-start;
           }
         }
 
         .nk-footer-img-placeholder {
           background: linear-gradient(145deg, #8B6347 0%, #6B4A30 50%, #3D2810 100%);
           border-radius: 8px;
+          overflow: hidden;
           width: 100%;
           /* FIX: on mobile the 4/3 ratio was very tall; cap the height */
           aspect-ratio: 16/9;
@@ -81,6 +110,8 @@ export function Footer() {
         }
         @media (min-width: 1024px) {
           .nk-footer-img-placeholder {
+            width: 300px;
+            flex-shrink: 0;
             aspect-ratio: 4/3;
             max-height: none;
           }
@@ -216,14 +247,15 @@ export function Footer() {
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           gap: 0.75rem;
           text-align: center;
         }
         @media (min-width: 640px) {
           .nk-footer-bottom-inner {
             flex-direction: row;
-            justify-content: space-between;
-            text-align: left;
+            justify-content: center;
+            text-align: center;
           }
         }
         .nk-footer-bottom-text {
@@ -260,8 +292,14 @@ export function Footer() {
         {/* ── TOP PANEL ── */}
         <div className="nk-footer-top">
           <div className="nk-footer-top-inner">
-            <div className="nk-footer-img-placeholder" />
-            <div>
+            <div className="nk-footer-img-placeholder">
+              <img
+                src="/images/footer/craftsmanship.jpg"
+                alt="Handcrafted bag making in Mumbai"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+            <div className="nk-footer-top-text">
               <p className="nk-footer-eyebrow">Bespoke Bags.</p>
               <h2 className="nk-footer-heading">CRAFTED IN MUMBAI.</h2>
               <p className="nk-footer-desc">
@@ -269,7 +307,7 @@ export function Footer() {
                 purpose, built to last, and made for the everyday moments that matter.
               </p>
 
-              <ul className="flex flex-col gap-3">
+              <ul className="nk-footer-contact-list">
                 <li className="flex items-center gap-3">
                   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
                     <path d="M8 1.5C5.51 1.5 3.5 3.51 3.5 6c0 3.75 4.5 8.5 4.5 8.5s4.5-4.75 4.5-8.5c0-2.49-2.01-4.5-4.5-4.5zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="rgba(245,239,230,0.4)"/>

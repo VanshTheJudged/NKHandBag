@@ -91,15 +91,15 @@ export function CategorySection() {
           background-color: #E8E0D0;
         }
         .nk-cat-icon-wrap {
-          width: 96px;
-          height: 96px;
+          width: 180px;
+          height: 180px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
         .nk-cat-icon-img {
-          width: 96px;
-          height: 96px;
+          width: 180px;
+          height: 180px;
           object-fit: contain;
         }
         .nk-cat-card-label {

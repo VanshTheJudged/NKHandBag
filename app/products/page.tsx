@@ -77,6 +77,33 @@ const SLUG_TO_LABEL: Record<string, string> = {
   'jewellery-boxes': 'Jewellery Boxes',
 };
 
+// Maps the ?type= slug (from CategorySection's bag subcategory pills) to the
+// subCategory label stored on each product in data/products.ts
+const SUB_SLUG_TO_LABEL: Record<string, string> = {
+  'shopping-bag': 'Shopping Bag',
+  'office-bags': 'Office Bags',
+  'laptop-bag': 'Laptop Bag',
+  'school-bags': 'School Bags',
+  'geometry-pouches': 'Geometry Pouches',
+  'shagun-potli': 'Shagun/Potli',
+  'gym-bags': 'Gym Bags',
+  'waist-bags': 'Waist Bags',
+  'ladies-bag': 'Ladies Bag',
+};
+
+// Used to render the bag subcategory filter pills, in display order
+const BAG_SUBCATEGORIES = [
+  'Shopping Bag',
+  'Office Bags',
+  'Laptop Bag',
+  'School Bags',
+  'Geometry Pouches',
+  'Shagun/Potli',
+  'Gym Bags',
+  'Waist Bags',
+  'Ladies Bag',
+];
+
 export default function ProductsPage() {
   return (
     <Suspense fallback={<div style={{ minHeight: '100vh', backgroundColor: '#F5EFE6' }} />}>
@@ -88,16 +115,26 @@ export default function ProductsPage() {
 function ProductsPageInner() {
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category');
+  const typeSlug = searchParams.get('type');
+
   const initialActive = categorySlug && SLUG_TO_LABEL[categorySlug]
     ? SLUG_TO_LABEL[categorySlug]
     : 'All';
 
+  const initialActiveSub = typeSlug && SUB_SLUG_TO_LABEL[typeSlug]
+    ? SUB_SLUG_TO_LABEL[typeSlug]
+    : 'All';
+
   const allProducts = products.length > 0 ? products : placeholders;
   const [active, setActive] = useState(initialActive);
+  const [activeSub, setActiveSub] = useState(initialActiveSub);
 
-  const filtered = active === 'All'
-    ? allProducts
-    : allProducts.filter((p) => p.category === active);
+  const filtered = allProducts.filter((p) => {
+    const matchesCategory = active === 'All' || p.category === active;
+    const matchesSub =
+      active !== 'Bags' || activeSub === 'All' || p.subCategory === activeSub;
+    return matchesCategory && matchesSub;
+  });
 
   return (
     <main style={{ minHeight: '100vh', backgroundColor: '#F5EFE6' }}>
@@ -198,12 +235,12 @@ function ProductsPageInner() {
         .nk-pl-filter-btn {
           font-family: var(--font-jetbrains-mono), monospace;
           font-size: 9px;
-          letter-spacing: 0.18em;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(30,35,24,0.45);
-          background: rgba(30,35,24,0.05);
+          color: #6B5B45;
+          background: rgba(30,35,24,0.06);
           border: none;
-          padding: 0.5rem 0.9rem;
+          padding: 0.45rem 0.85rem;
           cursor: pointer;
           transition: color 0.2s, background 0.2s;
           border-radius: 100px;
@@ -211,14 +248,61 @@ function ProductsPageInner() {
         }
         @media (min-width: 640px) {
           .nk-pl-filter-btn {
-            background: none;
-            padding: 0.4rem 0.9rem;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            padding: 0.5rem 1rem;
           }
         }
-        .nk-pl-filter-btn:hover { color: #1C1410; background: rgba(30,35,24,0.08); }
+        .nk-pl-filter-btn:hover { color: #1C1410; background: rgba(30,35,24,0.1); }
         .nk-pl-filter-btn.active {
           color: #F5EFE6 !important;
           background: #1E2318 !important;
+        }
+
+        /* ── SUB-FILTER BAR (bag subcategories) — animated slide ── */
+        .nk-pl-subfilter-outer {
+          display: grid;
+          grid-template-rows: 0fr;
+          opacity: 0;
+          transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                      opacity 0.3s ease;
+        }
+        .nk-pl-subfilter-outer.open {
+          grid-template-rows: 1fr;
+          opacity: 1;
+        }
+        .nk-pl-subfilter-inner {
+          overflow: hidden;
+          min-height: 0;
+        }
+        .nk-pl-subfilter-bar {
+          border-bottom: 1px solid rgba(30,35,24,0.06);
+          padding: 0.6rem 1.25rem;
+          background-color: #FAF7F1;
+          transform: translateY(-6px);
+          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nk-pl-subfilter-outer.open .nk-pl-subfilter-bar {
+          transform: translateY(0);
+        }
+        @media (min-width: 640px) {
+          .nk-pl-subfilter-bar {
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 0.55rem 1.5rem;
+          }
+          .nk-pl-subfilter-bar::-webkit-scrollbar { display: none; }
+        }
+        @media (min-width: 1024px) {
+          .nk-pl-subfilter-bar { padding: 0.55rem 3rem; }
+        }
+        .nk-pl-subfilter-btn {
+          font-size: 8px;
+          color: #7A6A52;
+          opacity: 1;
+        }
+        @media (min-width: 640px) {
+          .nk-pl-subfilter-btn { font-size: 10px; }
         }
 
         /* ── GRID ── */
@@ -387,11 +471,39 @@ function ProductsPageInner() {
             <button
               key={cat}
               className={`nk-pl-filter-btn ${active === cat ? 'active' : ''}`}
-              onClick={() => setActive(cat)}
+              onClick={() => {
+                setActive(cat);
+                setActiveSub('All'); // reset subcategory when switching main category
+              }}
             >
               {cat}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* ── SUB-FILTER BAR (animated slide, only meaningful content when Bags active) ── */}
+      <div className={`nk-pl-subfilter-outer ${active === 'Bags' ? 'open' : ''}`}>
+        <div className="nk-pl-subfilter-inner">
+          <div className="nk-pl-subfilter-bar">
+            <div className="nk-pl-filter-inner">
+              <button
+                className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeSub === 'All' ? 'active' : ''}`}
+                onClick={() => setActiveSub('All')}
+              >
+                All Bags
+              </button>
+              {BAG_SUBCATEGORIES.map((sub) => (
+                <button
+                  key={sub}
+                  className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeSub === sub ? 'active' : ''}`}
+                  onClick={() => setActiveSub(sub)}
+                >
+                  {sub}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
