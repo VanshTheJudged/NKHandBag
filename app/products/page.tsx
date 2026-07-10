@@ -6,7 +6,13 @@ import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { products, type Product } from '@/data/products';
+import {
+  products,
+  type Product,
+  getMaterialType,
+  MATERIAL_TYPES,
+  type MaterialType,
+} from '@/data/products';
 
 const placeholders: Product[] = [
   {
@@ -91,6 +97,16 @@ const SUB_SLUG_TO_LABEL: Record<string, string> = {
   'ladies-bag': 'Ladies Bag',
 };
 
+// Maps the ?material= slug to the MaterialType label
+const MATERIAL_SLUG_TO_LABEL: Record<string, MaterialType> = {
+  nylon: 'Nylon',
+  jute: 'Jute',
+  'non-woven': 'Non-woven',
+  woven: 'Woven',
+  canvas: 'Canvas',
+  rexine: 'Rexine',
+};
+
 // Used to render the bag subcategory filter pills, in display order
 const BAG_SUBCATEGORIES = [
   'Shopping Bag',
@@ -116,6 +132,7 @@ function ProductsPageInner() {
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category');
   const typeSlug = searchParams.get('type');
+  const materialSlug = searchParams.get('material');
 
   const initialActive = categorySlug && SLUG_TO_LABEL[categorySlug]
     ? SLUG_TO_LABEL[categorySlug]
@@ -125,15 +142,23 @@ function ProductsPageInner() {
     ? SUB_SLUG_TO_LABEL[typeSlug]
     : 'All';
 
+  const initialActiveMaterial: 'All' | MaterialType =
+    materialSlug && MATERIAL_SLUG_TO_LABEL[materialSlug]
+      ? MATERIAL_SLUG_TO_LABEL[materialSlug]
+      : 'All';
+
   const allProducts = products.length > 0 ? products : placeholders;
   const [active, setActive] = useState(initialActive);
   const [activeSub, setActiveSub] = useState(initialActiveSub);
+  const [activeMaterial, setActiveMaterial] = useState<'All' | MaterialType>(initialActiveMaterial);
 
   const filtered = allProducts.filter((p) => {
     const matchesCategory = active === 'All' || p.category === active;
     const matchesSub =
       active !== 'Bags' || activeSub === 'All' || p.subCategory === activeSub;
-    return matchesCategory && matchesSub;
+    const matchesMaterial =
+      active !== 'Bags' || activeMaterial === 'All' || getMaterialType(p) === activeMaterial;
+    return matchesCategory && matchesSub && matchesMaterial;
   });
 
   return (
@@ -259,7 +284,7 @@ function ProductsPageInner() {
           background: #1E2318 !important;
         }
 
-        /* ── SUB-FILTER BAR (bag subcategories) — animated slide ── */
+        /* ── SUB-FILTER BAR (bag subcategories / materials) — animated slide ── */
         .nk-pl-subfilter-outer {
           display: grid;
           grid-template-rows: 0fr;
@@ -474,6 +499,7 @@ function ProductsPageInner() {
               onClick={() => {
                 setActive(cat);
                 setActiveSub('All'); // reset subcategory when switching main category
+                setActiveMaterial('All'); // reset material when switching main category
               }}
             >
               {cat}
@@ -507,6 +533,31 @@ function ProductsPageInner() {
         </div>
       </div>
 
+      {/* ── SUB-FILTER BAR (material types, animated slide, only when Bags active) ── */}
+      <div className={`nk-pl-subfilter-outer ${active === 'Bags' ? 'open' : ''}`}>
+        <div className="nk-pl-subfilter-inner">
+          <div className="nk-pl-subfilter-bar">
+            <div className="nk-pl-filter-inner">
+              <button
+                className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeMaterial === 'All' ? 'active' : ''}`}
+                onClick={() => setActiveMaterial('All')}
+              >
+                All Materials
+              </button>
+              {MATERIAL_TYPES.map((mat) => (
+                <button
+                  key={mat}
+                  className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeMaterial === mat ? 'active' : ''}`}
+                  onClick={() => setActiveMaterial(mat)}
+                >
+                  {mat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── GRID ── */}
       <div className="nk-pl-body">
         <div className="nk-pl-grid">
@@ -526,6 +577,8 @@ function ProductsPageInner() {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const materialType = getMaterialType(product);
+
   return (
     <Link
       href={product.slug === '#' ? '#' : `/products/${product.slug}`}
@@ -555,6 +608,9 @@ function ProductCard({ product }: { product: Product }) {
         <h2 className="nk-pl-card-name">{product.name}</h2>
         {product.detail && (
           <p className="nk-pl-card-detail">{product.detail}</p>
+        )}
+        {!product.detail && materialType && (
+          <p className="nk-pl-card-detail">{materialType}</p>
         )}
         {product.customisable && product.customisable.length > 0 && (
           <p className="nk-pl-card-custom">Fully Customisable</p>
