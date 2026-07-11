@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useRef, useCallback } from 'react';
 import { gsap } from '@/lib/design/motion';
 
@@ -36,7 +37,13 @@ export function Hero() {
   const topIndex = useRef(0);
 
   useEffect(() => {
-    const copyEls = heroRef.current?.querySelectorAll('.hero-copy > *');
+    // NOTE: h1 is excluded here on purpose. The <h1> is the LCP element —
+    // if we opacity:0 it and wait on GSAP to fade it in, Chrome won't count
+    // the page as "painted" until the animation resolves, which was adding
+    // ~2.6s of pure render delay to LCP on throttled mobile. Everything else
+    // in hero-copy still gets the staggered fade; the heading is just visible
+    // immediately.
+    const copyEls = heroRef.current?.querySelectorAll('.hero-copy > *:not(h1)');
     if (copyEls) {
       gsap.set(copyEls, { opacity: 0, y: 24 });
       gsap.to(copyEls, {
@@ -479,7 +486,14 @@ export function Hero() {
                   <div className="nk-frame-shadow" />
                   <div className="nk-frame-inner">
                     {src ? (
-                      <img src={src} alt="" className="nk-frame-img" />
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        className="nk-frame-img"
+                        sizes="(max-width: 400px) 200px, (max-width: 767px) 240px, (max-width: 1023px) 255px, (max-width: 1199px) 300px, 340px"
+                        priority={i === 0}
+                      />
                     ) : (
                       <div style={{ width: '100%', height: '100%', background: PLACEHOLDER_GRADIENTS[i % 4] }} />
                     )}

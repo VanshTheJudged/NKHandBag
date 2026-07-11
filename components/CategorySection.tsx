@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const categories = [
   {
@@ -46,6 +47,25 @@ const bagSubcategories = [
 
 export function CategorySection() {
   const [bagsOpen, setBagsOpen] = useState(false);
+  const subcatRef = useRef<HTMLDivElement>(null);
+
+  // When the panel opens, scroll it into view once the grid-template-rows
+  // expansion has finished (transition is 0.45s, so we wait 300ms before
+  // measuring). We compute the target scroll position in one shot with
+  // getBoundingClientRect + a single scrollTo — firing two separate
+  // smooth-scroll calls back to back makes them cancel each other out
+  // and the page stops short.
+  useEffect(() => {
+    if (!bagsOpen) return;
+    const timer = setTimeout(() => {
+      const el = subcatRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - 100;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [bagsOpen]);
 
   return (
     <>
@@ -96,10 +116,9 @@ export function CategorySection() {
           display: flex;
           align-items: center;
           justify-content: center;
+          position: relative;
         }
         .nk-cat-icon-img {
-          width: 180px;
-          height: 180px;
           object-fit: contain;
         }
         .nk-cat-card-label {
@@ -257,14 +276,26 @@ export function CategorySection() {
               >
                 <span className={`nk-cat-expand-indicator ${bagsOpen ? 'rotated' : ''}`}>+</span>
                 <div className="nk-cat-icon-wrap">
-                  <img src={cat.image} alt={cat.label} className="nk-cat-icon-img" />
+                  <Image
+                    src={cat.image}
+                    alt={cat.label}
+                    fill
+                    className="nk-cat-icon-img"
+                    sizes="180px"
+                  />
                 </div>
                 <span className="nk-cat-card-label">{cat.label}</span>
               </button>
             ) : (
               <Link key={cat.label} href={cat.href} className="nk-cat-card">
                 <div className="nk-cat-icon-wrap">
-                  <img src={cat.image} alt={cat.label} className="nk-cat-icon-img" />
+                  <Image
+                    src={cat.image}
+                    alt={cat.label}
+                    fill
+                    className="nk-cat-icon-img"
+                    sizes="180px"
+                  />
                 </div>
                 <span className="nk-cat-card-label">{cat.label}</span>
               </Link>
@@ -279,7 +310,7 @@ export function CategorySection() {
         </div>
 
         {/* Bags subcategory panel — animated slide */}
-        <div className={`nk-subcat-outer ${bagsOpen ? 'open' : ''}`}>
+        <div ref={subcatRef} className={`nk-subcat-outer ${bagsOpen ? 'open' : ''}`}>
           <div className="nk-subcat-inner">
             <div className="nk-subcat-panel">
               <div className="nk-subcat-grid">
