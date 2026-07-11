@@ -63,7 +63,8 @@ export const products: Product[] = [
     materials: ['Cotton Canvas'],
     images: ['/products/bags/shopping-bags/b1.jpg'],
     customisable: ['Colour', 'Handles', 'Logo Print', 'Stitching'],
-    materialType: 'Canvas',
+    materialType: 'Jute',
+
   },
   {
     slug: 'asian-paints-royale-play-jute-bag',
@@ -154,7 +155,7 @@ export const products: Product[] = [
     materials: ['Cotton Canvas'],
     images: ['/products/bags/shopping-bags/b8.jpg'],
     customisable: ['Colour', 'Handles', 'Logo Print', 'Stitching'],
-    materialType: 'Canvas',
+    materialType: 'Jute',
   },
   {
     slug: 'quba-jewellers-shopping-bag',
@@ -622,7 +623,7 @@ export const products: Product[] = [
     materials: ['Cotton Canvas'],
     images: ['/products/bags/shopping-bags/b44.jpg'],
     customisable: ['Colour', 'Handles', 'Logo Print', 'Stitching'],
-    materialType: 'Canvas',
+    materialType: 'Jute',
   },
   {
     slug: 'anaya-gifts-peacock-shopping-bag',
@@ -1449,6 +1450,7 @@ export const products: Product[] = [
     materials: ['Cotton canvas', 'Cotton handles'],
     images: ['/products/bags/shopping-bags/Oberoi-international-school.jpeg'],
     customisable: TOTE_CUSTOMISATION,
+    materialType: 'Jute',
   },
   {
     slug: 'pouch-bag',
@@ -1509,6 +1511,7 @@ export const products: Product[] = [
     materials: ['Cotton canvas', 'Printed lining fabric', 'Cotton handles'],
     images: ['/products/bags/shopping-bags/Product4.jpeg'],
     customisable: TOTE_CUSTOMISATION,
+    materialType: 'Jute',
   },
   {
     slug: 'prohance-office-bag',
@@ -1521,6 +1524,7 @@ export const products: Product[] = [
     materials: ['Cotton canvas', 'Cotton handles'],
     images: ['/products/bags/shopping-bags/Prohance.jpeg'],
     customisable: TOTE_CUSTOMISATION,
+    materialType: 'Jute',
   },
   {
     slug: 'quantum-quest-office-bag',
@@ -1533,6 +1537,7 @@ export const products: Product[] = [
     materials: ['Woven fabric', 'Cotton handles', 'Printed hang tags'],
     images: ['/products/bags/shopping-bags/QuantumQuest.jpeg'],
     customisable: JUTE_CUSTOMISATION,
+    materialType: 'Jute',
   },
   {
     slug: 'radhika-balanced-body-gym-bag',
@@ -1581,6 +1586,7 @@ export const products: Product[] = [
     materials: ['Woven fabric', 'Cotton handles'],
     images: ['/products/bags/shopping-bags/SBI.jpeg'],
     customisable: JUTE_CUSTOMISATION,
+    materialType: 'Jute',
   },
   {
     slug: 'schott-office-bag',
@@ -2466,17 +2472,6 @@ export const products: Product[] = [
     images: ['/products/jewellery/j4.jpeg'],
     customisable: JEWELLERY_CUSTOMISATION,
     featured: true,
-  },
-  {
-    slug: 'kanhaiya-jewellers-teal-pouch',
-    name: 'Kanhaiya Jewellers Teal Pouch',
-    category: 'Jewellery Boxes',
-    detail: 'Teal fabric / Gold print',
-    description: 'A teal fabric zip pouch for Kanhaiya Jewellers, printed with the store name in Hindi and gold contact details.',
-    howItsMade: 'Sturdy fabric body with a gold-tone screen print and a smooth zip closure.',
-    materials: ['Fabric', 'Zip Closure'],
-    images: ['/products/jewellery/j5.jpg'],
-    customisable: JEWELLERY_CUSTOMISATION,
   },
   {
     slug: 'damodardas-jewellers-kraft-box',

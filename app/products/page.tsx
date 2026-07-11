@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import {
@@ -83,6 +83,11 @@ const SLUG_TO_LABEL: Record<string, string> = {
   'jewellery-boxes': 'Jewellery Boxes',
 };
 
+// Reverse of the above — display label back to URL slug
+const LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(SLUG_TO_LABEL).map(([slug, label]) => [label, slug])
+);
+
 // Maps the ?type= slug (from CategorySection's bag subcategory pills) to the
 // subCategory label stored on each product in data/products.ts
 const SUB_SLUG_TO_LABEL: Record<string, string> = {
@@ -97,6 +102,10 @@ const SUB_SLUG_TO_LABEL: Record<string, string> = {
   'ladies-bag': 'Ladies Bag',
 };
 
+const SUB_LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(SUB_SLUG_TO_LABEL).map(([slug, label]) => [label, slug])
+);
+
 // Maps the ?material= slug to the MaterialType label
 const MATERIAL_SLUG_TO_LABEL: Record<string, MaterialType> = {
   nylon: 'Nylon',
@@ -106,6 +115,10 @@ const MATERIAL_SLUG_TO_LABEL: Record<string, MaterialType> = {
   canvas: 'Canvas',
   rexine: 'Rexine',
 };
+
+const MATERIAL_LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(MATERIAL_SLUG_TO_LABEL).map(([slug, label]) => [label, slug])
+);
 
 // Used to render the bag subcategory filter pills, in display order
 const BAG_SUBCATEGORIES = [
@@ -129,6 +142,7 @@ export default function ProductsPage() {
 }
 
 function ProductsPageInner() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category');
   const typeSlug = searchParams.get('type');
@@ -151,6 +165,43 @@ function ProductsPageInner() {
   const [active, setActive] = useState(initialActive);
   const [activeSub, setActiveSub] = useState(initialActiveSub);
   const [activeMaterial, setActiveMaterial] = useState<'All' | MaterialType>(initialActiveMaterial);
+
+  // Pushes the given filter combo into the URL (replace, so it doesn't pile
+  // up browser history entries) — this is what makes filters survive
+  // navigating to a product and back.
+  function syncURL(nextActive: string, nextSub: string, nextMaterial: 'All' | MaterialType) {
+    const params = new URLSearchParams();
+
+    if (nextActive !== 'All' && LABEL_TO_SLUG[nextActive]) {
+      params.set('category', LABEL_TO_SLUG[nextActive]);
+    }
+    if (nextActive === 'Bags' && nextSub !== 'All' && SUB_LABEL_TO_SLUG[nextSub]) {
+      params.set('type', SUB_LABEL_TO_SLUG[nextSub]);
+    }
+    if (nextActive === 'Bags' && nextMaterial !== 'All' && MATERIAL_LABEL_TO_SLUG[nextMaterial]) {
+      params.set('material', MATERIAL_LABEL_TO_SLUG[nextMaterial]);
+    }
+
+    const query = params.toString();
+    router.replace(query ? `/products?${query}` : '/products', { scroll: false });
+  }
+
+  function handleCategoryClick(cat: string) {
+    setActive(cat);
+    setActiveSub('All');
+    setActiveMaterial('All');
+    syncURL(cat, 'All', 'All');
+  }
+
+  function handleSubClick(sub: string) {
+    setActiveSub(sub);
+    syncURL(active, sub, activeMaterial);
+  }
+
+  function handleMaterialClick(mat: 'All' | MaterialType) {
+    setActiveMaterial(mat);
+    syncURL(active, activeSub, mat);
+  }
 
   const filtered = allProducts.filter((p) => {
     const matchesCategory = active === 'All' || p.category === active;
@@ -496,11 +547,7 @@ function ProductsPageInner() {
             <button
               key={cat}
               className={`nk-pl-filter-btn ${active === cat ? 'active' : ''}`}
-              onClick={() => {
-                setActive(cat);
-                setActiveSub('All'); // reset subcategory when switching main category
-                setActiveMaterial('All'); // reset material when switching main category
-              }}
+              onClick={() => handleCategoryClick(cat)}
             >
               {cat}
             </button>
@@ -515,7 +562,7 @@ function ProductsPageInner() {
             <div className="nk-pl-filter-inner">
               <button
                 className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeSub === 'All' ? 'active' : ''}`}
-                onClick={() => setActiveSub('All')}
+                onClick={() => handleSubClick('All')}
               >
                 All Bags
               </button>
@@ -523,7 +570,7 @@ function ProductsPageInner() {
                 <button
                   key={sub}
                   className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeSub === sub ? 'active' : ''}`}
-                  onClick={() => setActiveSub(sub)}
+                  onClick={() => handleSubClick(sub)}
                 >
                   {sub}
                 </button>
@@ -540,7 +587,7 @@ function ProductsPageInner() {
             <div className="nk-pl-filter-inner">
               <button
                 className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeMaterial === 'All' ? 'active' : ''}`}
-                onClick={() => setActiveMaterial('All')}
+                onClick={() => handleMaterialClick('All')}
               >
                 All Materials
               </button>
@@ -548,7 +595,7 @@ function ProductsPageInner() {
                 <button
                   key={mat}
                   className={`nk-pl-filter-btn nk-pl-subfilter-btn ${activeMaterial === mat ? 'active' : ''}`}
-                  onClick={() => setActiveMaterial(mat)}
+                  onClick={() => handleMaterialClick(mat)}
                 >
                   {mat}
                 </button>
