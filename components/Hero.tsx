@@ -37,12 +37,8 @@ export function Hero() {
   const topIndex = useRef(0);
 
   useEffect(() => {
-    // NOTE: h1 is excluded here on purpose. The <h1> is the LCP element —
-    // if we opacity:0 it and wait on GSAP to fade it in, Chrome won't count
-    // the page as "painted" until the animation resolves, which was adding
-    // ~2.6s of pure render delay to LCP on throttled mobile. Everything else
-    // in hero-copy still gets the staggered fade; the heading is just visible
-    // immediately.
+    // h1 is the biggest text element and excluded from the fade — it needs
+    // to be visible on first paint, not wait on GSAP.
     const copyEls = heroRef.current?.querySelectorAll('.hero-copy > *:not(h1)');
     if (copyEls) {
       gsap.set(copyEls, { opacity: 0, y: 24 });
@@ -59,14 +55,18 @@ export function Hero() {
         const { x } = randXY(8);
         gsap.set(el, { rotation: randTilt(i * 2.5), x, y: 120, opacity: 0, scale: 0.93 });
       } else {
-        gsap.set(el, { opacity: 0, y: 120, scale: 0.93 });
+        // Frame 0 is the LCP element — keep it visible on first paint instead
+        // of fading in from opacity:0, otherwise LCP waits on this animation
+        // to run before it counts as "painted".
+        gsap.set(el, { opacity: 1, y: 0, scale: 1 });
       }
     });
 
     frameRefs.current.forEach((el, i) => {
       if (!el) return;
+      if (i === 0) return; // already visible, nothing to animate in
       gsap.to(el, {
-        y: i > 0 ? randXY(8).y : 0,
+        y: randXY(8).y,
         opacity: 1, scale: 1,
         duration: 1.1, delay: 0.4 + i * 0.09,
         ease: 'expo.out',

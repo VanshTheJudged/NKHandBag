@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const footerNav = [
   {
@@ -116,6 +117,7 @@ export function Footer() {
           width: 100%;
           aspect-ratio: 16/9;
           max-height: 220px;
+          position: relative;
         }
         @media (min-width: 1024px) {
           .nk-footer-img-placeholder {
@@ -302,10 +304,12 @@ export function Footer() {
         <div className="nk-footer-top">
           <div className="nk-footer-top-inner">
             <div className="nk-footer-img-placeholder">
-              <img
+              <Image
                 src="/images/footer/craftsmanship.jpg"
                 alt="Handcrafted bag making in Mumbai"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 1023px) 100vw, 300px"
               />
             </div>
             <div className="nk-footer-top-text">
