@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.10",
     "@supabase/supabase-js": "^2.110.1",
     "clsx": "^2.1.1",
     "gsap": "^3.12.5",
-    "next": "^15.0.3",
+    "next": "^16.2.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

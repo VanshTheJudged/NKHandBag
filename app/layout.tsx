@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Outfit, Instrument_Serif, JetBrains_Mono, Anton } from 'next/font/google';
 import './globals.css';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // Warm Studio fixed faces
 const outfit = Outfit({
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   title: 'NKHANDBAG — Bespoke Handbags from Mumbai',
   description:
     'Bespoke designs and personal design curation. Discover the NKHANDBAG legacy — handcrafted bags from Mumbai, India.',
-  metadataBase: new URL('https://NKHANDBAG.com'),
+  metadataBase: new URL('https://www.nkhandbag.com'),
   openGraph: {
     title: 'NKHANDBAG',
     description: 'Bespoke handbags. Crafted in Mumbai.',
@@ -54,6 +55,7 @@ export default function RootLayout({
       className={`${outfit.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${anton.variable}`}
     >
       <body className="bg-bg text-fg">{children}</body>
+      <GoogleAnalytics gaId="G-25708CCWV9" />
     </html>
   );
 }
