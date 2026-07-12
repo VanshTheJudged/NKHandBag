@@ -10,6 +10,7 @@ const FRAME_IMAGES = [
   '/images/hero-bag-2.jpg',
   '/images/hero-bag-3.jpg',
   '/images/hero-bag-4.jpg',
+  '/images/hero-bag-5.jpg',
 ];
 
 const PLACEHOLDER_GRADIENTS = [
@@ -17,6 +18,7 @@ const PLACEHOLDER_GRADIENTS = [
   'linear-gradient(145deg, #A07850 0%, #6B4A30 50%, #3D2010 100%)',
   'linear-gradient(145deg, #B08860 0%, #7A5238 50%, #4A2818 100%)',
   'linear-gradient(145deg, #D4B080 0%, #9A7255 50%, #6A4228 100%)',
+  'linear-gradient(145deg, #C29A6E 0%, #8A5F3E 50%, #52301A 100%)',
 ];
 
 function randTilt(max = 7): number {
@@ -495,7 +497,7 @@ export function Hero() {
                         priority={i === 0}
                       />
                     ) : (
-                      <div style={{ width: '100%', height: '100%', background: PLACEHOLDER_GRADIENTS[i % 4] }} />
+                      <div style={{ width: '100%', height: '100%', background: PLACEHOLDER_GRADIENTS[i % PLACEHOLDER_GRADIENTS.length] }} />
                     )}
                   </div>
                   <div className="nk-frame-outer-edge" />
