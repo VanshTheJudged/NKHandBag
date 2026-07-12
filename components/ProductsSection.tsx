@@ -4,24 +4,37 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { products, type Product } from '@/data/products';
 
-const CATEGORY_ORDER = ['Bags', 'Cap', 'Raw Materials', 'Customisable Pens', 'Jewellery Boxes'];
+const CATEGORY_ORDER = ['Bags', 'Cap', 'Customisable Pens', 'Jewellery Boxes'];
+
+// Pins a specific product as the homepage showcase pick for a category,
+// overriding the default "featured flag, else first found" behaviour below.
+// Keyed by category, value is the product slug.
+const HOMEPAGE_PICK_OVERRIDES: Record<string, string> = {
+  Bags: 'dabur-shopping-bag',
+  'Customisable Pens': 'dcb-bank-executive-pen',
+};
 
 const placeholders = [
   { id: 'p1', name: 'NK BAGS CLASSIC', category: 'Bags' },
   { id: 'p2', name: 'NK WOVEN CAP', category: 'Cap' },
-  { id: 'p3', name: 'NK RAW MATERIAL', category: 'Raw Materials' },
   { id: 'p4', name: 'NK CUSTOM PEN', category: 'Customisable Pens' },
   { id: 'p5', name: 'NK JEWELLERY BOX', category: 'Jewellery Boxes' },
 ];
 
 // Picks one product per category, in CATEGORY_ORDER.
-// Prefers a featured product within a category if one exists, else the first found.
-// Skips a category entirely if there's no product for it yet.
+// Prefers the HOMEPAGE_PICK_OVERRIDES slug if set, then a featured product
+// within a category, else the first found. Skips a category entirely if
+// there's no product for it yet.
 function getOneProductPerCategory(allProducts: Product[]): Product[] {
   return CATEGORY_ORDER
     .map((cat) => {
       const inCategory = allProducts.filter((p) => p.category === cat);
       if (inCategory.length === 0) return null;
+      const overrideSlug = HOMEPAGE_PICK_OVERRIDES[cat];
+      if (overrideSlug) {
+        const overridden = inCategory.find((p) => p.slug === overrideSlug);
+        if (overridden) return overridden;
+      }
       return inCategory.find((p) => p.featured) || inCategory[0];
     })
     .filter((p): p is Product => p !== null);
@@ -114,7 +127,7 @@ export function ProductsSection() {
         }
 
         .nk-card-bg {
-          background-color: #E8E0D0;
+          background-color: #FFFFFF;
         }
 
         .nk-pill {
@@ -215,7 +228,7 @@ export function ProductsSection() {
 
           {/* Product grid — plain spacing wrapper; frost now lives on each text chip */}
           <div className="nk-grid-panel">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-5 lg:gap-x-6 lg:gap-y-20">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-20">
               {displayProducts
                 ? displayProducts.map((product) => (
                     <ProductCard
@@ -276,7 +289,7 @@ function ProductCard({ href, image, name, category }: CardProps) {
             src={image}
             alt={name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           />
         ) : null}

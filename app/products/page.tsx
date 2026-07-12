@@ -106,19 +106,29 @@ const SUB_LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(SUB_SLUG_TO_LABEL).map(([slug, label]) => [label, slug])
 );
 
-// Maps the ?material= slug to the MaterialType label
+// Maps the ?material= slug to the MaterialType label.
+// 'nylon' and 'rexine' are kept as legacy aliases so old bookmarked/shared
+// URLs still resolve — both now collapse into the single 'Synthetic' type.
 const MATERIAL_SLUG_TO_LABEL: Record<string, MaterialType> = {
-  nylon: 'Nylon',
+  synthetic: 'Synthetic',
+  nylon: 'Synthetic',
+  rexine: 'Synthetic',
   jute: 'Jute',
   'non-woven': 'Non-woven',
   woven: 'Woven',
   canvas: 'Canvas',
-  rexine: 'Rexine',
 };
 
-const MATERIAL_LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
-  Object.entries(MATERIAL_SLUG_TO_LABEL).map(([slug, label]) => [label, slug])
-);
+// Built explicitly (not derived by reversing the map above) since multiple
+// slugs now point to the same label — this fixes the canonical slug used
+// when writing the URL back out.
+const MATERIAL_LABEL_TO_SLUG: Record<string, string> = {
+  Synthetic: 'synthetic',
+  Jute: 'jute',
+  'Non-woven': 'non-woven',
+  Woven: 'woven',
+  Canvas: 'canvas',
+};
 
 // Used to render the bag subcategory filter pills, in display order
 const BAG_SUBCATEGORIES = [
