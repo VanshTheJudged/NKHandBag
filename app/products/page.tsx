@@ -107,16 +107,18 @@ const SUB_LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
 );
 
 // Maps the ?material= slug to the MaterialType label.
-// 'nylon' and 'rexine' are kept as legacy aliases so old bookmarked/shared
-// URLs still resolve — both now collapse into the single 'Synthetic' type.
+// 'nylon' is kept as a legacy alias so old bookmarked/shared URLs still
+// resolve — it now collapses into the 'Synthetic' type. 'Rexine' is its
+// own distinct MaterialType again.
 const MATERIAL_SLUG_TO_LABEL: Record<string, MaterialType> = {
   synthetic: 'Synthetic',
   nylon: 'Synthetic',
-  rexine: 'Synthetic',
+  rexine: 'Rexine',
   jute: 'Jute',
   'non-woven': 'Non-woven',
   woven: 'Woven',
   canvas: 'Canvas',
+  meti: 'Meti',
 };
 
 // Built explicitly (not derived by reversing the map above) since multiple
@@ -128,6 +130,8 @@ const MATERIAL_LABEL_TO_SLUG: Record<string, string> = {
   'Non-woven': 'non-woven',
   Woven: 'woven',
   Canvas: 'canvas',
+  Meti: 'meti',
+  Rexine: 'rexine',
 };
 
 // Used to render the bag subcategory filter pills, in display order
