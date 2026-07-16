@@ -10,7 +10,7 @@ const CATEGORY_ORDER = ['Bags', 'Cap', 'Customisable Pens', 'Jewellery Boxes'];
 // overriding the default "featured flag, else first found" behaviour below.
 // Keyed by category, value is the product slug.
 const HOMEPAGE_PICK_OVERRIDES: Record<string, string> = {
-  Bags: 'dabur-shopping-bag',
+  Bags: 'harsahaimal-shiamlal-jewellers-ladies-bag',
   'Customisable Pens': 'dcb-bank-executive-pen',
 };
 

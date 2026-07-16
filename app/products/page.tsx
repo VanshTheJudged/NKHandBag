@@ -93,12 +93,10 @@ const LABEL_TO_SLUG: Record<string, string> = Object.fromEntries(
 const SUB_SLUG_TO_LABEL: Record<string, string> = {
   'shopping-bag': 'Shopping Bag',
   'office-bags': 'Office Bags',
-  'laptop-bag': 'Laptop Bag',
   'school-bags': 'School Bags',
   'geometry-pouches': 'Geometry Pouches',
   'shagun-potli': 'Shagun/Potli',
   'gym-bags': 'Gym Bags',
-  'waist-bags': 'Waist Bags',
   'ladies-bag': 'Ladies Bag',
 };
 
@@ -138,12 +136,10 @@ const MATERIAL_LABEL_TO_SLUG: Record<string, string> = {
 const BAG_SUBCATEGORIES = [
   'Shopping Bag',
   'Office Bags',
-  'Laptop Bag',
   'School Bags',
   'Geometry Pouches',
   'Shagun/Potli',
   'Gym Bags',
-  'Waist Bags',
   'Ladies Bag',
 ];
 

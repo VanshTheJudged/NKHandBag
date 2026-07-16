@@ -1637,6 +1637,19 @@ export const products: Product[] = [
     images: ['/products/bags/shopping-bags/TheSchwanIndia.jpeg'],
     customisable: TOTE_CUSTOMISATION,
   },
+  {
+  slug: 'harsahaimal-shiamlal-jewellers-ladies-bag',
+  name: 'Harsahaimal Shiamlal Jewellers Ladies Bag',
+  category: 'Bags',
+  subCategory: 'Ladies Bag',
+  detail: 'Glossy red / Gold handles & emblem',
+  description: 'A glossy red patent-finish bag for Harsahaimal Shiamlal Jewellers, finished with mirror-gold handles and a gold shell emblem.',
+  howItsMade: 'Laminated glossy sheet material with mirror-gold PU handles, a gold foil-stamped emblem, and a zip-top closure with a branded pull tag.',
+  materials: ['Rexine (PU)'],
+  images: ['/products/bags/shopping-bags/b68.jpg'],
+  customisable: ['Colour', 'Handles', 'Logo Print'],
+  materialType: 'Rexine',
+},
 
   // ── Customisable pens ──
   {

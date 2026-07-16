@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 
@@ -63,9 +64,15 @@ export function Header() {
             ))}
           </nav>
 
-          <span className="justify-self-end font-mono text-xs tracking-widest-plus text-[#A8A090]">
-            MUMBAI · INDIA
-          </span>
+          <Link href="/" className="relative h-8 w-[140px] justify-self-end">
+            <Image
+              src="/logo.png"
+              alt="NKHANDBAG"
+              width={200}
+              height={70}
+              className="absolute right-0 top-1/2 h-16 w-auto -translate-y-1/2 object-contain opacity-90 transition-opacity hover:opacity-100"
+            />
+          </Link>
         </div>
       </header>
 
@@ -88,9 +95,13 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <span className="mt-16 font-mono text-xs tracking-widest-plus text-[#7A7260]">
-          MUMBAI · INDIA
-        </span>
+        <Image
+          src="/logo.png"
+          alt="NKHANDBAG"
+          width={180}
+          height={64}
+          className="mt-16 h-14 w-auto object-contain"
+        />
       </div>
     </>
   );
