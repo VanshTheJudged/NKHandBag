@@ -377,6 +377,9 @@ export default function ContactPage() {
               </li>
               <li className="nk-contact-info-item">
                 <p className="nk-contact-info-type">WhatsApp</p>
+                <a href="https://wa.me/918439998480" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
+                  +91 8439998480
+                </a>
                 <a href="https://wa.me/919315101359" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
                   +91 9315101359 
                 </a>
