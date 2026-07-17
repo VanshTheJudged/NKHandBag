@@ -335,16 +335,6 @@ export function Footer() {
                     nkhandbag@gmail.com
                   </a>
                 </li>
-                <li className="flex items-center gap-3">
-                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-                    <rect x="1.5" y="1.5" width="13" height="13" rx="3.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/>
-                    <circle cx="8" cy="8" r="2.5" stroke="rgba(245,239,230,0.4)" strokeWidth="1.2"/>
-                    <circle cx="11.5" cy="4.5" r="0.75" fill="rgba(245,239,230,0.4)"/>
-                  </svg>
-                  {/* <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="nk-footer-contact-label">
-                    @NKHANDBAG
-                  </a> */}
-                </li>
               </ul>
             </div>
           </div>
