@@ -64,7 +64,25 @@ export default function ContactPage() {
           letter-spacing: 0.3em;
           color: rgba(245,239,230,0.35);
           text-transform: uppercase;
-          margin: 0 0 1rem;
+          margin: 0 0 1.5rem;
+        }
+        .nk-contact-hero-link {
+          display: inline-flex;
+          align-items: center;
+          gap: clamp(16px, 3vw, 28px);
+          text-decoration: none;
+          border: 1px solid rgba(245,239,230,0.3);
+          border-radius: 999px;
+          padding: clamp(0.6rem, 1.5vw, 1rem) clamp(0.6rem, 1.5vw, 1rem) clamp(0.6rem, 1.5vw, 1rem) clamp(1.5rem, 4vw, 3rem);
+          transition: opacity 0.2s, border-color 0.2s;
+        }
+        .nk-contact-hero-link:hover {
+          opacity: 0.75;
+          border-color: rgba(245,239,230,0.6);
+        }
+        .nk-contact-hero-link:hover .nk-contact-hero-arrow {
+          transform: translateX(4px);
+          border-color: rgba(245,239,230,0.7);
         }
         .nk-contact-hero-heading {
           font-family: "Cormorant Garamond", "Playfair Display", Georgia, serif;
@@ -73,13 +91,29 @@ export default function ContactPage() {
           color: #F5EFE6;
           line-height: 1;
           letter-spacing: -0.02em;
-          margin: 0 0 1rem;
+          margin: 0;
+        }
+        .nk-contact-hero-arrow {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: clamp(48px, 7vw, 76px);
+          height: clamp(48px, 7vw, 76px);
+          border-radius: 50%;
+          border: 1px solid rgba(245,239,230,0.3);
+          color: #F5EFE6;
+          flex-shrink: 0;
+          transition: transform 0.25s, border-color 0.2s;
+        }
+        .nk-contact-hero-arrow svg {
+          width: 40%;
+          height: 40%;
         }
         .nk-contact-hero-sub {
           font-family: var(--font-outfit), sans-serif;
           font-size: 14px;
           color: rgba(245,239,230,0.4);
-          margin: 0 auto;
+          margin: 1.5rem auto 0;
           max-width: 400px;
           line-height: 1.7;
         }
@@ -355,7 +389,20 @@ export default function ContactPage() {
         {/* ── HERO ── */}
         <div className="nk-contact-hero">
           <p className="nk-contact-eyebrow">Get in touch</p>
-          <a href="https://wa.me/918439998480" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value"><h1 className="nk-contact-hero-heading">Contact us</h1></a>
+
+          <a
+            href="https://wa.me/919315101359"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nk-contact-hero-link"
+          >
+            <h1 className="nk-contact-hero-heading">Contact us</h1>
+            <span className="nk-contact-hero-arrow">
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </a>
           <p className="nk-contact-hero-sub">
             Have a custom order in mind, or just want to say hello?
             We'd love to hear from you.
@@ -377,11 +424,11 @@ export default function ContactPage() {
               </li>
               <li className="nk-contact-info-item">
                 <p className="nk-contact-info-type">WhatsApp</p>
-                <a href="https://wa.me/918439998480" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
-                  +91 8439998480
-                </a>
                 <a href="https://wa.me/919315101359" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
                   +91 9315101359 
+                </a>
+                <a href="https://wa.me/918439998480" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
+                  +91 8439998480
                 </a>
                 <a href="https://wa.me/917303788877" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value">
                   +91 7303788877
