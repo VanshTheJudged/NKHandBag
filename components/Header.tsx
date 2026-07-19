@@ -70,7 +70,7 @@ export function Header() {
               alt="NKHANDBAG"
               width={200}
               height={70}
-              className="absolute right-0 top-1/2 h-16 w-auto -translate-y-1/2 object-contain opacity-90 transition-opacity hover:opacity-100"
+              className="absolute right-0 top-1/2 h-16 w-auto -translate-y-1/2 rounded-xl object-contain opacity-90 transition-opacity hover:opacity-100"
             />
           </Link>
         </div>
@@ -100,7 +100,7 @@ export function Header() {
           alt="NKHANDBAG"
           width={180}
           height={64}
-          className="mt-16 h-14 w-auto object-contain"
+          className="mt-16 h-14 w-auto rounded-xl object-contain"
         />
       </div>
     </>
