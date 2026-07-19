@@ -355,7 +355,7 @@ export default function ContactPage() {
         {/* ── HERO ── */}
         <div className="nk-contact-hero">
           <p className="nk-contact-eyebrow">Get in touch</p>
-          <h1 className="nk-contact-hero-heading">Contact Us</h1>
+          <a href="https://wa.me/918439998480" target="_blank" rel="noopener noreferrer" className="nk-contact-info-value"><h1 className="nk-contact-hero-heading">Contact us</h1></a>
           <p className="nk-contact-hero-sub">
             Have a custom order in mind, or just want to say hello?
             We'd love to hear from you.
