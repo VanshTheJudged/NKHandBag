@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { products } from '@/data/products';
+import { fetchDbProductBySlug } from '@/lib/products-db';
 import { ProductClient } from './ProductClient';
+
+// Static catalogue pages are prebuilt; owner-added products render on demand.
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -16,7 +20,7 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
+  const product = products.find((p) => p.slug === slug) ?? (await fetchDbProductBySlug(slug));
   if (!product) notFound();
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919315101359';

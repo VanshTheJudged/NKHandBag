@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -13,6 +13,7 @@ import {
   MATERIAL_TYPES,
   type MaterialType,
 } from '@/data/products';
+import { fetchDbProducts } from '@/lib/products-db';
 
 const placeholders: Product[] = [
   {
@@ -171,7 +172,14 @@ function ProductsPageInner() {
       ? MATERIAL_SLUG_TO_LABEL[materialSlug]
       : 'All';
 
-  const allProducts = products.length > 0 ? products : placeholders;
+  // Owner-added products (from Supabase) shown ahead of the static catalogue
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    fetchDbProducts().then(setDbProducts).catch(() => {});
+  }, []);
+
+  const merged = [...dbProducts, ...products];
+  const allProducts = merged.length > 0 ? merged : placeholders;
   const [active, setActive] = useState(initialActive);
   const [activeSub, setActiveSub] = useState(initialActiveSub);
   const [activeMaterial, setActiveMaterial] = useState<'All' | MaterialType>(initialActiveMaterial);
