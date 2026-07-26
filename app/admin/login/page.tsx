@@ -10,6 +10,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPw, setShowPw] = useState(false);
 
   // If already logged in, skip straight to the dashboard
   useEffect(() => {
@@ -64,14 +65,27 @@ export default function AdminLoginPage() {
         />
 
         <label style={labelStyle}>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-          style={inputStyle}
-          autoComplete="current-password"
-        />
+        <div style={{ position: 'relative', marginBottom: '1rem' }}>
+          <input
+            type={showPw ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+            style={{ ...inputStyle, marginBottom: 0, paddingRight: '3.5rem' }}
+            autoComplete="current-password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPw((s) => !s)}
+            style={{
+              position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
+              background: 'none', border: 'none', color: '#6B5B45', fontSize: 12,
+              cursor: 'pointer', padding: '4px 6px',
+            }}
+          >
+            {showPw ? 'Hide' : 'Show'}
+          </button>
+        </div>
 
         {error && <p style={{ color: '#b00', fontSize: 13, margin: '0 0 0.75rem' }}>{error}</p>}
 
