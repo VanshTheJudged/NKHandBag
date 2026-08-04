@@ -4,12 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Header } from '@/components/Header';
 import { supabase, type Review } from '@/lib/supabase';
 
-function pickRandomFiveStar(reviews: Review[], count: number): Review[] {
-  const fiveStar = reviews.filter((r) => r.rating === 5);
-  const shuffled = [...fiveStar].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
-}
-
 function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
   return (
     <div style={{ display: 'flex', gap: 3 }}>
@@ -81,7 +75,7 @@ export default function ReviewsPage() {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
-      setDisplayed(pickRandomFiveStar(data, 3));
+      setDisplayed(data);
     }
     setLoading(false);
   }
@@ -442,7 +436,7 @@ export default function ReviewsPage() {
             <p className="nk-reviews-empty">Loading reviews...</p>
           ) : displayed.length === 0 ? (
             <p className="nk-reviews-empty">
-              No 5-star reviews yet — be the first to leave one above.
+              No reviews yet — be the first to leave one above.
             </p>
           ) : (
             <div className="nk-reviews-grid">
