@@ -58,6 +58,11 @@ function StarInput({ value, onChange }: { value: number; onChange: (n: number) =
   );
 }
 
+const NAME_MAX = 60;
+const MESSAGE_MAX = 1000;
+const COOLDOWN_MS = 60_000;
+const COOLDOWN_KEY = 'nk_review_last_ts';
+
 export default function ReviewsPage() {
   const [displayed, setDisplayed] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +70,10 @@ export default function ReviewsPage() {
   const [name, setName] = useState('');
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState('');
+  // Bots fill every input — real users never see this one. Non-empty = drop.
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
   async function loadReviews() {
     setLoading(true);
@@ -91,24 +99,55 @@ export default function ReviewsPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Honeypot tripped -> pretend success, drop the submission silently.
+    if (honeypot.trim() !== '') {
+      setStatus('success');
+      setName(''); setRating(0); setMessage(''); setHoneypot('');
+      return;
+    }
+
     if (!canSubmit) {
+      setErrorMsg('Please add your name, a rating, and a message before submitting.');
       setStatus('error');
       return;
     }
+
+    const trimmedName = name.trim().slice(0, NAME_MAX);
+    const trimmedMessage = message.trim().slice(0, MESSAGE_MAX);
+    if (trimmedName.length < 2 || trimmedMessage.length < 5) {
+      setErrorMsg('Please enter a longer name and message.');
+      setStatus('error');
+      return;
+    }
+
+    // Per-browser cooldown so one visitor can't spam the form in a loop.
+    try {
+      const last = Number(localStorage.getItem(COOLDOWN_KEY) ?? 0);
+      if (last && Date.now() - last < COOLDOWN_MS) {
+        const wait = Math.ceil((COOLDOWN_MS - (Date.now() - last)) / 1000);
+        setErrorMsg(`Please wait ${wait}s before posting another review.`);
+        setStatus('error');
+        return;
+      }
+    } catch { /* localStorage unavailable — skip */ }
 
     setStatus('sending');
 
     const { error } = await supabase.from('reviews').insert({
-      name: name.trim(),
+      name: trimmedName,
       rating,
-      message: message.trim(),
+      message: trimmedMessage,
     });
 
     if (error) {
       console.error(error);
+      setErrorMsg('Something went wrong. Please try again.');
       setStatus('error');
       return;
     }
+
+    try { localStorage.setItem(COOLDOWN_KEY, String(Date.now())); } catch { /* ignore */ }
 
     setName('');
     setRating(0);
@@ -379,6 +418,29 @@ export default function ReviewsPage() {
             </div>
           ) : (
             <form className="nk-reviews-form" onSubmit={handleSubmit}>
+              {/* Honeypot: hidden from users, filled by bots. */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  width: 1,
+                  height: 1,
+                  overflow: 'hidden',
+                }}
+              >
+                <label>
+                  Leave this field empty
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </label>
+              </div>
+
               <div className="nk-reviews-field">
                 <label className="nk-reviews-label">Name</label>
                 <input
@@ -387,6 +449,7 @@ export default function ReviewsPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
+                  maxLength={NAME_MAX}
                   required
                 />
               </div>
@@ -403,13 +466,14 @@ export default function ReviewsPage() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tell us about your experience..."
+                  maxLength={MESSAGE_MAX}
                   required
                 />
               </div>
 
               {status === 'error' && (
                 <div className="nk-reviews-error">
-                  Please add your name, a rating, and a message before submitting.
+                  {errorMsg || 'Please add your name, a rating, and a message before submitting.'}
                 </div>
               )}
 
